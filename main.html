@@ -40,3 +40,45 @@
           radial-gradient(900px 520px at 86% 5%, rgba(110,240,255,.14), transparent 60%),
           radial-gradient(1000px 700px at 50% 120%, rgba(209,165,255,.11), transparent 58%),
           linear-gradient(180deg, var(--bg0), var(--bg1) 35%, var(--bg2));
+        overflow-x:hidden;
+      }
+      a{color:inherit}
+      .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 56px}
+      .top{
+        display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;
+        padding:10px 4px 14px;
+      }
+      .brand{
+        display:flex;flex-direction:column;gap:8px;min-width:260px;
+      }
+      .brand h1{
+        margin:0;
+        font-size:22px;letter-spacing:.4px;font-weight:780;
+        display:flex;align-items:center;gap:10px;
+      }
+      .badge{
+        font-family:var(--mono);
+        font-size:12px;
+        padding:4px 9px;border-radius:999px;
+        border:1px solid var(--line);
+        background:linear-gradient(180deg, rgba(14,21,38,.75), rgba(9,12,22,.65));
+        color:var(--mut);
+      }
+      .sub{
+        margin:0;
+        color:var(--mut);
+        line-height:1.35;
+        max-width:740px;
+      }
+      .right{
+        display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+      button, .btn{
+        appearance:none;border:1px solid var(--line);
+        background:linear-gradient(180deg, rgba(17,25,45,.85), rgba(11,14,24,.78));
+        color:var(--txt);
+        padding:10px 12px;border-radius:12px;
+        cursor:pointer;
+        box-shadow: 0 10px 30px rgba(0,0,0,.25);
+        transition: transform .08s ease, border-color .15s ease, background .15s ease, opacity .15s ease;
