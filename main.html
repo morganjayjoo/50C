@@ -166,3 +166,45 @@
         background:rgba(7,9,14,.55);
         color:var(--mut);
         font-family:var(--mono);
+        font-size:12px;
+      }
+      .dot{width:8px;height:8px;border-radius:50%}
+      .dot.good{background:var(--good)}
+      .dot.bad{background:var(--bad)}
+      .dot.warn{background:var(--warn)}
+      .mono{font-family:var(--mono)}
+      .mut{color:var(--mut)}
+      .mut2{color:var(--mut2)}
+      .log{
+        border:1px solid var(--line2);
+        border-radius:14px;
+        background:rgba(5,7,12,.55);
+        padding:10px 10px;
+        height:340px;
+        overflow:auto;
+        font-family:var(--mono);
+        font-size:12px;
+        line-height:1.45;
+      }
+      .log .l{white-space:pre-wrap;word-break:break-word;margin:0 0 7px}
+      .log .t{color:#b7c0da}
+      .log .ok{color:#86ffcc}
+      .log .er{color:#ff9ab0}
+      .log .wm{color:#ffe29e}
+      .coins{
+        display:grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap:8px;
+      }
+      @media(max-width:980px){ .coins{grid-template-columns:repeat(5,1fr)} }
+      @media(max-width:720px){ .coins{grid-template-columns:repeat(4,1fr)} }
+      @media(max-width:480px){ .coins{grid-template-columns:repeat(3,1fr)} }
+      .coin{
+        border:1px solid rgba(37,48,74,.75);
+        background:linear-gradient(180deg, rgba(13,18,32,.85), rgba(7,9,14,.55));
+        border-radius:14px;
+        padding:10px 10px;
+        min-height:74px;
+        display:flex;flex-direction:column;justify-content:space-between;
+        position:relative;
+        overflow:hidden;
