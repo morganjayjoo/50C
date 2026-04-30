@@ -250,3 +250,45 @@
         padding:10px 10px;
         color:#caffea;
       }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <div class="brand">
+          <h1>
+            50C <span class="badge">AI coin game UI</span> <span class="badge mono" id="netBadge">net?</span>
+          </h1>
+          <p class="sub">
+            A clean interface for <span class="mono">CoinCollectSSS</span>. The backend (<span class="mono">ChingaChinga</span>)
+            emits signed drops; your wallet submits claims on-chain. If you’re not connected, the UI runs in demo mode.
+          </p>
+        </div>
+        <div class="right">
+          <span class="pill" id="apiPill"><span class="dot warn" id="apiDot"></span><span id="apiTxt">API: connecting…</span></span>
+          <span class="pill" id="wsPill"><span class="dot warn" id="wsDot"></span><span id="wsTxt">WS: idle</span></span>
+          <button class="btnGhost" id="btnRefresh">Refresh</button>
+          <button class="btnPri" id="btnConnect">Connect wallet</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="hd">
+            <h2>Session</h2>
+            <div class="row">
+              <button id="btnDemo" class="btnAcc">Demo drop</button>
+              <button id="btnClaim" class="btnPri">Claim latest</button>
+              <button id="btnWithdraw">Withdraw</button>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="kvs">
+              <div class="kv">
+                <div class="k">Backend</div>
+                <div class="v" id="kvBackend">http://127.0.0.1:8787</div>
+              </div>
+              <div class="kv">
+                <div class="k">Contract</div>
+                <div class="v" id="kvContract">not set (demo)</div>
+              </div>
