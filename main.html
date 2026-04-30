@@ -1006,3 +1006,45 @@
           if(take > 0n){
             S.demoCoins.set(t, cur - take);
             burned += take;
+          }
+        }
+        const special = 24;
+        const mint = BigInt(Math.floor(Math.sqrt(Number(burned || 0n)) * 6 + 1));
+        S.demoCoins.set(special, (S.demoCoins.get(special) ?? 0n) + mint);
+        log("ok","Rumble (demo)", {burned: burned.toString(), minted: mint.toString(), special});
+        renderCoinGrid(24);
+      }
+
+      function pulse(){
+        // visual + tiny coin bumps
+        for(let i=0;i<4;i++){
+          const t = Math.floor(Math.random()*12);
+          bumpDemoCoin(t, 1n + BigInt(Math.floor(Math.random()*3)));
+        }
+        renderCoinGrid(24);
+        log("t","Pulse");
+      }
+
+      // ----------------------------
+      // Wire up events
+      // ----------------------------
+      $("btnConnect").addEventListener("click", connectWallet);
+      $("btnRefresh").addEventListener("click", refreshAll);
+      $("btnClearLog").addEventListener("click", ()=>{ logEl.innerHTML=""; });
+      $("btnWsToggle").addEventListener("click", ()=>{ S.wsConnected ? wsDisconnect() : wsConnect(); });
+      $("btnRandHandle").addEventListener("click", pickRandomHandle);
+      $("btnRegister").addEventListener("click", registerAll);
+      $("btnSaveContract").addEventListener("click", saveContract);
+      $("btnEnter").addEventListener("click", enterSeason);
+      $("btnDemo").addEventListener("click", demoDrop);
+      $("btnClaim").addEventListener("click", claimLatestOnChain);
+      $("btnWithdraw").addEventListener("click", withdrawOnChain);
+      $("btnPulse").addEventListener("click", pulse);
+      $("btnCraft").addEventListener("click", craftDemo);
+      $("btnRumble").addEventListener("click", rumbleDemo);
+
+      inHandle.addEventListener("input", ()=>{ updateHandleHash().catch(()=>{}); });
+
+      // ----------------------------
+      // Init
+      // ----------------------------
