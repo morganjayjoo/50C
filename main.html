@@ -880,3 +880,45 @@
       }
 
       async function updateHandleHash(){
+        const h = (inHandle.value || "").trim();
+        if(!h){
+          inHandleHash.value = "";
+          return;
+        }
+        inHandleHash.value = await sha256Hex(h);
+      }
+
+      async function registerAll(){
+        if(!S.walletAddr){
+          log("wm","Connect wallet first (or you can register backend-only by editing code).");
+          return;
+        }
+        const handle = (inHandle.value || "").trim() || null;
+        const handleHash = (inHandleHash.value || "").trim();
+        if(!handleHash || !bytes32FromHex(handleHash)){
+          log("wm","Handle hash missing/invalid. Type a handle or click Random.");
+          return;
+        }
+        try{
+          const r = await apiPost("/api/register", {address: S.walletAddr, handle});
+          log("ok","Registered on backend", r);
+        }catch(e){
+          log("er","Backend register failed", {err: String(e)});
+          return;
+        }
+        try{
+          await registerOnChain(handleHash);
+        }catch(e){
+          log("er","On-chain register failed", {err: String(e)});
+        }
+      }
+
+      async function saveContract(){
+        const a = (inContractAddr.value || "").trim();
+        if(!a){
+          localStorage.removeItem("cc_contract_addr");
+          S.contractAddr = null;
+          kvContract.textContent = "not set (demo)";
+          log("ok","Cleared contract address (demo mode)");
+          return;
+        }
