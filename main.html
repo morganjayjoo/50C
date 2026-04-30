@@ -670,3 +670,45 @@
         const rc = await tx.wait();
         log("ok","Register confirmed", {block: rc.blockNumber});
       }
+
+      async function enterSeasonOnChain(entryFeeWei){
+        if(!S.contract){
+          log("wm","No contract attached (demo).");
+          return;
+        }
+        const fee = BigInt(entryFeeWei || "0");
+        const tx = await S.contract.enterSeason({value: fee});
+        log("t","Enter season tx sent", {hash: tx.hash, value: fee.toString()});
+        const rc = await tx.wait();
+        log("ok","Entered season", {block: rc.blockNumber});
+      }
+
+      async function claimLatestOnChain(){
+        if(!S.contract){
+          log("wm","No contract attached (demo).");
+          return;
+        }
+        if(!S.latestDrop){
+          log("wm","No drop to claim yet.");
+          return;
+        }
+        const d = S.latestDrop;
+        const claim = {
+          seasonId: Number(d.season_id),
+          coinType: Number(d.coin_type),
+          amount: BigInt(d.amount),
+          deadline: Number(d.deadline),
+          dropId: d.drop_id,
+          nonce: BigInt(d.nonce),
+          signature: d.sig ?? d.signature
+        };
+        const tipWei = 0n; // contract default is 0; if you change it, update here.
+        const tx = await S.contract.claimDrops([claim], {value: tipWei});
+        log("t","Claim tx sent", {hash: tx.hash});
+        const rc = await tx.wait();
+        log("ok","Claim confirmed", {block: rc.blockNumber});
+        bumpDemoCoin(Number(d.coin_type), BigInt(d.amount));
+        renderCoinGrid(24);
+      }
+
+      async function withdrawOnChain(){
