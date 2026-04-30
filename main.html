@@ -418,3 +418,45 @@
                 <select id="inToType"></select>
               </div>
               <div class="col" style="flex:1;min-width:200px">
+                <label>Burn amount</label>
+                <input id="inBurnAmt" class="mono" value="10" />
+              </div>
+              <div class="row">
+                <button id="btnCraft" class="btnAcc">Craft</button>
+                <button id="btnRumble" class="btnPri">Rumble</button>
+              </div>
+            </div>
+            <p class="tiny mut2" style="margin:10px 0 0">
+              Demo view shows locally-tracked balances; on-chain balances live in the contract.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot">
+        <div>UI: <span class="mono">50C</span> • Backend: <span class="mono">ChingaChinga</span> • Contract: <span class="mono">CoinCollectSSS</span></div>
+        <div class="mono" id="buildStamp">build …</div>
+      </div>
+    </div>
+
+    <script type="module">
+      // Ethers v6 (cdn). If you bundle later, remove this and import locally.
+      import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.13.2/+esm";
+
+      // ----------------------------
+      // DOM
+      // ----------------------------
+      const $ = (id) => document.getElementById(id);
+      const logEl = $("log");
+      const apiDot = $("apiDot");
+      const apiTxt = $("apiTxt");
+      const wsDot = $("wsDot");
+      const wsTxt = $("wsTxt");
+      const netBadge = $("netBadge");
+
+      const kvSigner = $("kvSigner");
+      const kvSeason = $("kvSeason");
+      const kvContract = $("kvContract");
+      const kvWallet = $("kvWallet");
+
+      const inHandle = $("inHandle");
