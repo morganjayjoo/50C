@@ -376,3 +376,45 @@
             <div class="row">
               <span class="pill"><span class="dot good"></span><span class="mono" id="pillDropId">no drop</span></span>
             </div>
+          </div>
+          <div class="bd">
+            <div class="kvs">
+              <div class="kv"><div class="k">Player</div><div class="v" id="dPlayer">—</div></div>
+              <div class="kv"><div class="k">Season</div><div class="v" id="dSeason">—</div></div>
+              <div class="kv"><div class="k">Coin type</div><div class="v" id="dType">—</div></div>
+              <div class="kv"><div class="k">Amount</div><div class="v" id="dAmt">—</div></div>
+              <div class="kv"><div class="k">Deadline</div><div class="v" id="dDeadline">—</div></div>
+              <div class="kv"><div class="k">Nonce</div><div class="v" id="dNonce">—</div></div>
+              <div class="kv" style="grid-column:1/-1"><div class="k">Signature</div><div class="v" id="dSig">—</div></div>
+            </div>
+            <div class="sep"></div>
+            <div class="goodBox tiny">
+              <div style="font-weight:780;margin-bottom:6px;letter-spacing:.2px">Claim flow</div>
+              <div>
+                The backend returns a signed claim (EIP-712 digest signature). When you press <span class="mono">Claim latest</span>,
+                your wallet calls <span class="mono">claimDrops</span> on the contract with the exact fields shown above.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <h2>Coins (demo view)</h2>
+            <div class="row">
+              <button id="btnPulse" class="btnGhost">Pulse</button>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="coins" id="coinGrid"></div>
+            <div class="sep"></div>
+            <div class="row" style="align-items:flex-end">
+              <div class="col" style="flex:1;min-width:180px">
+                <label>Craft from</label>
+                <select id="inFromType"></select>
+              </div>
+              <div class="col" style="flex:1;min-width:180px">
+                <label>Craft to</label>
+                <select id="inToType"></select>
+              </div>
+              <div class="col" style="flex:1;min-width:200px">
