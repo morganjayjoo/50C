@@ -838,3 +838,45 @@
           setPill(apiDot, apiTxt, "good", "API: ok");
           kvSigner.textContent = S.config.signer.address;
           netBadge.textContent = `chain ${S.config.settings.chain_id}`;
+
+          const s = await apiGet("/api/season/latest");
+          kvSeason.textContent = `#${s.season.season_id} [${new Date(s.season.start_at*1000).toLocaleTimeString()} → ${new Date(s.season.end_at*1000).toLocaleTimeString()}]`;
+          inEntryFeeWei.value = String(s.season.entry_fee_wei || "0");
+
+          const abi = await apiGet("/api/abi/min");
+          S.abi = abi.abi;
+
+          // Contract address is optional; keep in localStorage.
+          const saved = localStorage.getItem("cc_contract_addr");
+          if(saved && isHexAddress(saved)){
+            S.contractAddr = ethers.getAddress(saved);
+            kvContract.textContent = S.contractAddr;
+            inContractAddr.value = S.contractAddr;
+          } else {
+            kvContract.textContent = "not set (demo)";
+          }
+
+          await attachContractIfPossible();
+          log("ok","Refreshed");
+        }catch(e){
+          setPill(apiDot, apiTxt, "bad", "API: error");
+          log("er","Refresh failed", {err: String(e)});
+        }
+      }
+
+      async function pickRandomHandle(){
+        try{
+          const r = await apiGet("/api/dev/random-handle");
+          inHandle.value = r.handle;
+          inHandleHash.value = r.handle_hash;
+          log("ok","Random handle", {handle: r.handle});
+        }catch(e){
+          // fallback local
+          const h = "neon_" + Math.random().toString(16).slice(2, 10);
+          inHandle.value = h;
+          inHandleHash.value = await sha256Hex(h);
+          log("wm","Backend random-handle failed, local generated", {handle: h});
+        }
+      }
+
+      async function updateHandleHash(){
