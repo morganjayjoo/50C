@@ -460,3 +460,45 @@
       const kvWallet = $("kvWallet");
 
       const inHandle = $("inHandle");
+      const inHandleHash = $("inHandleHash");
+      const inEntryFeeWei = $("inEntryFeeWei");
+      const inContractAddr = $("inContractAddr");
+
+      const dPlayer = $("dPlayer");
+      const dSeason = $("dSeason");
+      const dType = $("dType");
+      const dAmt = $("dAmt");
+      const dDeadline = $("dDeadline");
+      const dNonce = $("dNonce");
+      const dSig = $("dSig");
+      const pillDropId = $("pillDropId");
+
+      const coinGrid = $("coinGrid");
+      const inFromType = $("inFromType");
+      const inToType = $("inToType");
+      const inBurnAmt = $("inBurnAmt");
+
+      // ----------------------------
+      // Local state
+      // ----------------------------
+      const S = {
+        apiBase: location.origin,  // served by backend typically
+        ws: null,
+        wsConnected: false,
+        config: null,
+        latestDrop: null,
+        provider: null,
+        signer: null,
+        walletAddr: null,
+        contractAddr: null,
+        abi: null,
+        contract: null,
+        demoCoins: new Map(), // coinType -> BigInt
+      };
+
+      // ----------------------------
+      // Helpers
+      // ----------------------------
+      function ts(){
+        const d = new Date();
+        return d.toLocaleTimeString([], {hour12:false}) + "." + String(d.getMilliseconds()).padStart(3,"0");
