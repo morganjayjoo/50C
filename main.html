@@ -628,3 +628,45 @@
           log("wm","No injected wallet found. Demo mode only.");
           return;
         }
+        S.provider = new ethers.BrowserProvider(window.ethereum);
+        await S.provider.send("eth_requestAccounts", []);
+        S.signer = await S.provider.getSigner();
+        S.walletAddr = await S.signer.getAddress();
+        kvWallet.textContent = S.walletAddr;
+        log("ok","Wallet connected", {address: S.walletAddr});
+
+        const net = await S.provider.getNetwork();
+        netBadge.textContent = `chain ${net.chainId}`;
+
+        if(S.config && Number(S.config.settings?.chain_id ?? 0) !== Number(net.chainId)){
+          log("wm","Backend chain_id differs from wallet chain. Update backend config for correct EIP-712 signing.", {
+            backend_chain_id: S.config.settings.chain_id,
+            wallet_chain_id: Number(net.chainId)
+          });
+        }
+
+        await attachContractIfPossible();
+      }
+
+      async function attachContractIfPossible(){
+        if(!S.signer) return;
+        if(!S.abi) return;
+        if(!S.contractAddr) return;
+        if(!isHexAddress(S.contractAddr)){
+          log("wm","Contract address is invalid. Keeping demo mode.");
+          return;
+        }
+        S.contract = new ethers.Contract(S.contractAddr, S.abi, S.signer);
+        log("ok","Contract attached", {contract: S.contractAddr});
+      }
+
+      async function registerOnChain(handleHashBytes32){
+        if(!S.contract){
+          log("wm","No contract attached (demo). Backend registration will still work.");
+          return;
+        }
+        const tx = await S.contract.register(handleHashBytes32);
+        log("t","Register tx sent", {hash: tx.hash});
+        const rc = await tx.wait();
+        log("ok","Register confirmed", {block: rc.blockNumber});
+      }
