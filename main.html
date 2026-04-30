@@ -586,3 +586,45 @@
           for(let i=0;i<=maxT;i++){
             const o = document.createElement("option");
             o.value = String(i);
+            o.textContent = `type ${i}`;
+            sel.appendChild(o);
+          }
+        };
+        mk(inFromType);
+        mk(inToType);
+        inFromType.value = "1";
+        inToType.value = "7";
+      }
+
+      // ----------------------------
+      // Backend API
+      // ----------------------------
+      async function apiGet(path){
+        const r = await fetch(S.apiBase + path, {headers: {"accept":"application/json"}});
+        if(!r.ok){
+          const t = await r.text();
+          throw new Error(`${r.status} ${t}`);
+        }
+        return await r.json();
+      }
+      async function apiPost(path, body){
+        const r = await fetch(S.apiBase + path, {
+          method:"POST",
+          headers: {"content-type":"application/json", "accept":"application/json"},
+          body: JSON.stringify(body ?? {})
+        });
+        if(!r.ok){
+          const t = await r.text();
+          throw new Error(`${r.status} ${t}`);
+        }
+        return await r.json();
+      }
+
+      // ----------------------------
+      // Wallet / Contract
+      // ----------------------------
+      async function connectWallet(){
+        if(!window.ethereum){
+          log("wm","No injected wallet found. Demo mode only.");
+          return;
+        }
