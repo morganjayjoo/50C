@@ -544,3 +544,45 @@
 
       function nowSec(){
         return Math.floor(Date.now()/1000);
+      }
+
+      function bytes32FromHex(hex){
+        if(!hex.startsWith("0x")) return null;
+        if(hex.length !== 66) return null;
+        return hex;
+      }
+
+      async function sha256Hex(text){
+        const enc = new TextEncoder().encode(text);
+        const hash = await crypto.subtle.digest("SHA-256", enc);
+        const arr = Array.from(new Uint8Array(hash));
+        const hex = arr.map(b => b.toString(16).padStart(2,"0")).join("");
+        return "0x" + hex;
+      }
+
+      function bumpDemoCoin(t, add){
+        const cur = S.demoCoins.get(t) ?? 0n;
+        S.demoCoins.set(t, cur + BigInt(add));
+      }
+
+      function renderCoinGrid(maxT=24){
+        coinGrid.innerHTML = "";
+        for(let i=0;i<=maxT;i++){
+          const v = S.demoCoins.get(i) ?? 0n;
+          const el = document.createElement("div");
+          el.className = "coin";
+          el.innerHTML = `
+            <div class="spark"></div>
+            <div class="id">type ${i}</div>
+            <div class="val">${v.toString()}</div>
+          `;
+          coinGrid.appendChild(el);
+        }
+      }
+
+      function fillTypeSelects(maxT=48){
+        const mk = (sel) => {
+          sel.innerHTML = "";
+          for(let i=0;i<=maxT;i++){
+            const o = document.createElement("option");
+            o.value = String(i);
