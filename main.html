@@ -754,3 +754,45 @@
         S.ws.onerror = () => {
           setPill(wsDot, wsTxt, "bad", "WS: error");
           log("er","WS error");
+        };
+        S.ws.onmessage = (ev) => {
+          try{
+            const m = JSON.parse(ev.data);
+            onWs(m);
+          }catch(e){
+            log("wm","WS message parse failed", {err: String(e)});
+          }
+        };
+      }
+
+      function wsDisconnect(){
+        if(S.ws){
+          try{ S.ws.close(); }catch(_){}
+        }
+        S.ws = null;
+        S.wsConnected = false;
+        setPill(wsDot, wsTxt, "warn", "WS: idle");
+      }
+
+      function onWs(m){
+        if(m.type === "hello"){
+          log("ok","WS hello", {signer: m.signer});
+          return;
+        }
+        if(m.type === "heartbeat"){
+          setPill(wsDot, wsTxt, "good", "WS: live");
+          return;
+        }
+        if(m.type === "player"){
+          log("t","New/updated player", {address: m.address, handle: m.handle});
+          return;
+        }
+        if(m.type === "season"){
+          log("t","Season updated", m.season);
+          return;
+        }
+        if(m.type === "drop"){
+          setLatestDrop(m);
+          log("ok","Drop", {
+            player: shortAddr(m.player),
+            season: m.season_id,
