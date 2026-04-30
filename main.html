@@ -922,3 +922,45 @@
           log("ok","Cleared contract address (demo mode)");
           return;
         }
+        if(!isHexAddress(a)){
+          log("wm","Invalid contract address.");
+          return;
+        }
+        const cs = ethers.getAddress(a);
+        localStorage.setItem("cc_contract_addr", cs);
+        S.contractAddr = cs;
+        kvContract.textContent = cs;
+        log("ok","Saved contract address", {contract: cs});
+        await attachContractIfPossible();
+
+        // Also update backend verifying contract so signatures match.
+        try{
+          const net = S.provider ? await S.provider.getNetwork() : null;
+          const chainId = net ? Number(net.chainId) : Number(S.config?.settings?.chain_id ?? 1);
+          await apiPost("/api/config/update", {chain_id: chainId, verifying_contract: cs});
+          log("ok","Backend updated verifying contract", {verifying_contract: cs, chain_id: chainId});
+        }catch(e){
+          log("wm","Backend config update failed (still ok for demo)", {err: String(e)});
+        }
+      }
+
+      async function enterSeason(){
+        try{
+          const fee = BigInt((inEntryFeeWei.value || "0").trim() || "0");
+          await enterSeasonOnChain(fee.toString());
+        }catch(e){
+          log("er","Enter season failed", {err: String(e)});
+        }
+      }
+
+      async function demoDrop(){
+        if(!S.walletAddr){
+          log("wm","Connect wallet first to target a player address.");
+          return;
+        }
+        try{
+          const r = await apiPost("/api/drop", {address: S.walletAddr});
+          // backend returns signature under "signature"
+          const d = {
+            type: "drop",
+            t: nowSec(),
