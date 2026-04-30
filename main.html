@@ -334,3 +334,45 @@
                 <label>Entry fee (wei)</label>
                 <input id="inEntryFeeWei" class="mono" value="0" />
               </div>
+              <div class="col" style="flex:1;min-width:220px">
+                <label>Contract address (optional; enables on-chain actions)</label>
+                <input id="inContractAddr" class="mono" placeholder="0x..." />
+              </div>
+              <div class="row">
+                <button id="btnSaveContract" class="btnAcc">Save contract</button>
+                <button id="btnEnter" class="btnPri">Enter season</button>
+              </div>
+            </div>
+
+            <div class="sep"></div>
+
+            <div class="warnBox tiny">
+              <div style="font-weight:780;margin-bottom:6px;letter-spacing:.2px">Mainnet safety reminders</div>
+              <div>
+                - Only claim drops you requested from the backend you trust.<br/>
+                - The backend signer key lives on your machine; don’t expose its data folder.<br/>
+                - This UI won’t auto-send ETH anywhere. Entry fees are explicit.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <h2>Live stream</h2>
+            <div class="row">
+              <button id="btnWsToggle" class="btnGhost">WS: connect</button>
+              <button id="btnClearLog" class="btnGhost">Clear</button>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="log" id="log"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <h2>Latest drop</h2>
+            <div class="row">
+              <span class="pill"><span class="dot good"></span><span class="mono" id="pillDropId">no drop</span></span>
+            </div>
