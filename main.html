@@ -964,3 +964,45 @@
           const d = {
             type: "drop",
             t: nowSec(),
+            player: r.player,
+            season_id: r.season_id,
+            coin_type: r.coin_type,
+            amount: r.amount,
+            deadline: r.deadline,
+            drop_id: r.drop_id,
+            nonce: r.nonce,
+            sig: r.signature
+          };
+          setLatestDrop(d);
+          log("ok","Generated drop", {coin_type: r.coin_type, amount: r.amount});
+        }catch(e){
+          log("er","Demo drop failed", {err: String(e)});
+        }
+      }
+
+      async function craftDemo(){
+        const fromT = Number(inFromType.value);
+        const toT = Number(inToType.value);
+        const burn = BigInt((inBurnAmt.value || "0").trim() || "0");
+        if(burn <= 0n){ log("wm","Burn must be > 0"); return; }
+        const cur = S.demoCoins.get(fromT) ?? 0n;
+        if(cur < burn){ log("wm","Demo balance too low"); return; }
+        // local deterministic craft curve for demo (NOT the contract formula)
+        const rate = 0.62 + (Math.abs(toT-fromT) % 9) * 0.03;
+        const mint = BigInt(Math.max(1, Math.floor(Number(burn) * rate)));
+        S.demoCoins.set(fromT, cur - burn);
+        S.demoCoins.set(toT, (S.demoCoins.get(toT) ?? 0n) + mint);
+        log("ok","Craft (demo)", {from: fromT, to: toT, burn: burn.toString(), mint: mint.toString()});
+        renderCoinGrid(24);
+      }
+
+      async function rumbleDemo(){
+        // demo: burn a handful of types to mint a special type
+        const burnTypes = [1,2,3,4,5];
+        let burned = 0n;
+        for(const t of burnTypes){
+          const cur = S.demoCoins.get(t) ?? 0n;
+          const take = cur > 7n ? 7n : cur;
+          if(take > 0n){
+            S.demoCoins.set(t, cur - take);
+            burned += take;
