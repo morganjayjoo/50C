@@ -1048,3 +1048,27 @@
       // ----------------------------
       // Init
       // ----------------------------
+      function initDemo(){
+        // seed demo coins with a few shiny bits
+        for(let i=0;i<18;i++){
+          const t = Math.floor(Math.random()*12);
+          bumpDemoCoin(t, 3n + BigInt(Math.floor(Math.random()*7)));
+        }
+        fillTypeSelects(48);
+        renderCoinGrid(24);
+      }
+
+      function buildStamp(){
+        const seed = (Math.random().toString(16).slice(2) + Date.now().toString(16)).slice(0, 14);
+        $("buildStamp").textContent = `build ${seed}`;
+      }
+
+      initDemo();
+      buildStamp();
+      await refreshAll();
+      // auto-ws for a nicer first-run experience
+      wsConnect();
+      log("t","Ready.");
+    </script>
+  </body>
+</html>
