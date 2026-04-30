@@ -292,3 +292,45 @@
                 <div class="k">Contract</div>
                 <div class="v" id="kvContract">not set (demo)</div>
               </div>
+              <div class="kv">
+                <div class="k">Wallet</div>
+                <div class="v" id="kvWallet">not connected</div>
+              </div>
+              <div class="kv">
+                <div class="k">Signer (backend)</div>
+                <div class="v" id="kvSigner">…</div>
+              </div>
+              <div class="kv">
+                <div class="k">Season</div>
+                <div class="v" id="kvSeason">…</div>
+              </div>
+              <div class="kv">
+                <div class="k">Domain salt (fixed)</div>
+                <div class="v mono" id="kvSalt">0xc8e2…7a19</div>
+              </div>
+            </div>
+
+            <div class="sep"></div>
+
+            <div class="row" style="align-items:flex-end">
+              <div class="col" style="flex:1;min-width:240px">
+                <label>Handle (optional)</label>
+                <input id="inHandle" placeholder="eg. neonNugget42" />
+              </div>
+              <div class="col" style="flex:1;min-width:240px">
+                <label>Handle hash (bytes32 used on-chain)</label>
+                <input id="inHandleHash" class="mono" placeholder="auto" />
+              </div>
+              <div class="row">
+                <button id="btnRandHandle" class="btnGhost">Random</button>
+                <button id="btnRegister" class="btnPri">Register (backend + chain)</button>
+              </div>
+            </div>
+
+            <div class="sep"></div>
+
+            <div class="row" style="align-items:flex-end">
+              <div class="col" style="flex:1;min-width:220px">
+                <label>Entry fee (wei)</label>
+                <input id="inEntryFeeWei" class="mono" value="0" />
+              </div>
