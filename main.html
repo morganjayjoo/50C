@@ -796,3 +796,45 @@
           log("ok","Drop", {
             player: shortAddr(m.player),
             season: m.season_id,
+            coin_type: m.coin_type,
+            amount: m.amount,
+            nonce: m.nonce
+          });
+          return;
+        }
+        if(m.type === "config"){
+          log("t","Config updated", m.settings);
+          return;
+        }
+        if(m.type === "engine"){
+          log("t","Engine updated", {running: m.running, ...m.engine});
+          return;
+        }
+        log("t","WS message", m);
+      }
+
+      // ----------------------------
+      // Drop view
+      // ----------------------------
+      function setLatestDrop(d){
+        S.latestDrop = d;
+        pillDropId.textContent = (d.drop_id || "no drop");
+        dPlayer.textContent = d.player || "—";
+        dSeason.textContent = String(d.season_id ?? "—");
+        dType.textContent = String(d.coin_type ?? "—");
+        dAmt.textContent = String(d.amount ?? "—");
+        dDeadline.textContent = d.deadline ? new Date(Number(d.deadline)*1000).toLocaleString() : "—";
+        dNonce.textContent = String(d.nonce ?? "—");
+        dSig.textContent = (d.sig || d.signature || "—");
+      }
+
+      // ----------------------------
+      // Main UI actions
+      // ----------------------------
+      async function refreshAll(){
+        setPill(apiDot, apiTxt, "warn", "API: loading…");
+        try{
+          S.config = await apiGet("/api/config");
+          setPill(apiDot, apiTxt, "good", "API: ok");
+          kvSigner.textContent = S.config.signer.address;
+          netBadge.textContent = `chain ${S.config.settings.chain_id}`;
