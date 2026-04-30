@@ -712,3 +712,45 @@
       }
 
       async function withdrawOnChain(){
+        if(!S.contract){
+          log("wm","No contract attached (demo).");
+          return;
+        }
+        const tx = await S.contract.withdraw();
+        log("t","Withdraw tx sent", {hash: tx.hash});
+        const rc = await tx.wait();
+        log("ok","Withdraw confirmed", {block: rc.blockNumber});
+      }
+
+      // ----------------------------
+      // WebSocket
+      // ----------------------------
+      function wsUrl(){
+        const u = new URL(location.href);
+        u.protocol = u.protocol === "https:" ? "wss:" : "ws:";
+        u.pathname = "/ws";
+        u.search = "";
+        u.hash = "";
+        return u.toString();
+      }
+
+      function wsConnect(){
+        if(S.wsConnected) return;
+        const u = wsUrl();
+        S.ws = new WebSocket(u);
+        S.wsConnected = true;
+        setPill(wsDot, wsTxt, "warn", "WS: connecting…");
+        log("t","WS connecting", {url: u});
+
+        S.ws.onopen = () => {
+          setPill(wsDot, wsTxt, "good", "WS: live");
+          log("ok","WS connected");
+        };
+        S.ws.onclose = () => {
+          setPill(wsDot, wsTxt, "bad", "WS: closed");
+          S.wsConnected = false;
+          log("wm","WS closed");
+        };
+        S.ws.onerror = () => {
+          setPill(wsDot, wsTxt, "bad", "WS: error");
+          log("er","WS error");
